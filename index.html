@@ -8,7 +8,7 @@
     <title>Titel</title>
     <link rel="stylesheet" href="./assets/css/styles.css" />
 
-    <script src="./assets/js/index.js" defer></script>
+    <script src="./assets/js/index2.js" defer></script>
 </head>
 
 <body>
@@ -19,6 +19,7 @@
         <select id="selType">
             <option value="sine">Sinus</option>
             <option value="square">Quad</option>
+            <option value="triangle">Dreieck</option>
             <option value="sawtooth">Sägezahn</option>
             <option value="custom">Eigenes</option>
         </select>
@@ -26,6 +27,10 @@
     <p>
         <span>Frequency</span>
         <input type="range" min="20" max="2000" step="1" value="440" id="rngFrequency">
+    </p>
+    <p>
+        <span>Volume</span>
+        <input type="range" min="0" max="1" step=".01" value=".5" id="rngVolume">
     </p>
 </body>
 

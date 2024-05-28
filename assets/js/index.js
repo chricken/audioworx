@@ -1,57 +1,27 @@
-'use strict';
+const audioContext = new AudioContext();
 
-// KONSTANTEN / VARIABLEN
-const elements = {};
-const context = new AudioContext()
-const o = context.createOscillator();
-let frequency = 1440;
-let type = "sine"
+const oscillator = audioContext.createOscillator();
+oscillator.type = 'sine';
+oscillator.frequency.setValueAtTime(80, audioContext.currentTime);
 
-// FUNKTIONEN
-const domMapping = () => {
-    elements.btnStart = document.querySelector('#btnStart');
-    elements.btnStop = document.querySelector('#btnStop');
-    elements.rngFrequency = document.querySelector('#rngFrequency');
-    elements.selType = document.querySelector('#selType');
-}
-const setDefaults = () => {
-    elements.rngFrequency.value = frequency;
-    elements.selType.value = type;
-}
+const gainNode = audioContext.createGain();
+gainNode.gain.setValueAtTime(0.5, audioContext.currentTime);
 
-const appendEventlisteners = () => {
-    elements.btnStart.addEventListener('click', play);
-    elements.btnStop.addEventListener('click', stop);
-    elements.rngFrequency.addEventListener('input', chngFrequency);
-    elements.selType.addEventListener('input', chngType);
-}
+oscillator.connect(gainNode).connect(audioContext.destination);
 
-const chngFrequency = evt => {
-    frequency = +evt.target.value;
-    o.frequency.setValueAtTime(frequency, context.currentTime);
-}
 
-const chngType = evt => {
-    type = evt.target.value;
-    o.type = type;
+// Um die Lautstärke zu ändern:
+function changeVolume(volume) {
+    gainNode.gain.setValueAtTime(volume, audioContext.currentTime);
 }
 
 const play = () => {
-    o.type = "sawtooth";
-    o.frequency.setValueAtTime(frequency, context.currentTime);
-    o.connect(context.destination)
-    o.start()
+    oscillator.start();
 }
 
-const stop = () => {
-    o.stop();
+const changeVol = evt => {
+    changeVolume(+evt.target.value)
 }
 
-const init = () => {
-    domMapping();
-    setDefaults();
-    appendEventlisteners();
-}
-
-// INIT
-init();
+document.querySelector("#btnStart").addEventListener('click', play);
+document.querySelector("#rngVolume").addEventListener('input', changeVol);
